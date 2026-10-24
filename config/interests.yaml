@@ -30,8 +30,9 @@ spaces:
         - youtube:UCeh-pJYRZTBJDXMNZeWSUVA # Artifexian
         - youtube:UCMjTcpv56G_W0FRIdPHBn4A # Biblaridion
         - youtube:UCnVqE5aiTqVJdRxhszBaHoQ # The Fantasy Forge
-        - youtube:UCZ0l702Df6x8JB5g4IM2PVA # Grainbound
+        - youtube:UCSeuqv9fNSUJT5VfcmslTBg # The Grainbound (@TheGrainbound)
         - youtube:UCf5MDxxTuT1OpwOxVfG-ofg # World Anvil Worldbuilding
+        - youtube:UCuV9ve9LV0ATFKvdDWAMeAg # World in Progress (@WorldInProgressYT)
     - name: Fantasy and sci-fi
       include: [fantasy, science fiction, sci-fi, SFF, Tolkien, Sanderson, Dune, Dungeons & Dragons]
       sources:
