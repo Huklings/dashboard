@@ -2,14 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import type { Article, DataFile, Space } from "../shared/articles";
 import { useMarks } from "./storage";
 
-type Filter = "all" | "unread" | "saved" | "videos";
+type Filter = "all" | "unread" | "saved" | "favs" | "videos";
 
 const SPACES: { id: Space; label: string }[] = [
   { id: "work", label: "Work" },
   { id: "hobby", label: "Hobby" },
 ];
 
-const FILTERS: Filter[] = ["all", "unread", "saved", "videos"];
+const FILTERS: Filter[] = ["all", "unread", "saved", "favs", "videos"];
 
 // The fetcher already only emits http(s) links; this is a second check at render time.
 function safeHref(url: string): string | undefined {
@@ -87,13 +87,16 @@ export function App() {
         (!topic || a.topics.includes(topic)) &&
         (filter !== "unread" || !marks.read.has(a.url)) &&
         (filter !== "saved" || marks.saved.has(a.url)) &&
+        (filter !== "favs" || marks.favourites.has(a.source)) &&
         (filter !== "videos" || a.kind === "video") &&
         (!q || a.title.toLowerCase().includes(q) || a.summary.toLowerCase().includes(q)),
     );
   }, [inSpace, topic, filter, query, marks.read, marks.saved]);
 
-  const videos = visible.filter((a) => a.kind === "video");
-  const articles = visible.filter((a) => a.kind !== "video");
+  // Favourite sources float to the top; newest first within each group.
+  const ranked = [...visible].sort((a, b) => Number(marks.favourites.has(b.source)) - Number(marks.favourites.has(a.source)));
+  const videos = ranked.filter((a) => a.kind === "video");
+  const articles = ranked.filter((a) => a.kind !== "video");
   const cardProps = (a: Article): CardProps => ({
     article: a,
     now,
@@ -102,6 +105,8 @@ export function App() {
     onOpen: () => marks.setRead(a.url, true),
     onToggleRead: () => marks.setRead(a.url),
     onToggleSaved: () => marks.toggleSaved(a.url),
+    isFavourite: marks.favourites.has(a.source),
+    onToggleFavourite: () => marks.toggleFavourite(a.source),
   });
 
   const failing = data?.sources.filter((s) => !s.ok) ?? [];
@@ -203,7 +208,7 @@ export function App() {
               className="w-full rounded-lg border border-white/10 bg-white/[0.03] py-2.5 pr-3 pl-8 font-mono text-sm text-slate-100 placeholder:text-slate-500 backdrop-blur transition outline-none focus:border-neon-cyan/60 focus:shadow-[0_0_20px_-6px] focus:shadow-neon-cyan/70"
             />
           </label>
-          <div className="flex rounded-lg border border-white/10 bg-white/[0.03] p-1 font-mono text-xs tracking-wider uppercase" role="group" aria-label="Filter">
+          <div className="flex flex-wrap rounded-lg border border-white/10 bg-white/[0.03] p-1 font-mono text-xs tracking-wider uppercase" role="group" aria-label="Filter">
             {FILTERS.map((f) => (
               <button
                 key={f}
@@ -214,7 +219,7 @@ export function App() {
                   filter === f ? "bg-white/10 text-white ring-1 ring-white/20" : "text-slate-400 hover:text-slate-100"
                 }`}
               >
-                {f}
+                {f === "favs" ? "★ favs" : f}
               </button>
             ))}
           </div>
@@ -279,6 +284,28 @@ interface CardProps {
   onOpen: () => void;
   onToggleRead: () => void;
   onToggleSaved: () => void;
+  isFavourite: boolean;
+  onToggleFavourite: () => void;
+}
+
+function sourceName(article: Article): string {
+  return article.author ?? hostOf(article.source);
+}
+
+function FavouriteButton({ article, isFavourite, onToggleFavourite }: Pick<CardProps, "article" | "isFavourite" | "onToggleFavourite">) {
+  const name = sourceName(article);
+  return (
+    <button
+      type="button"
+      onClick={onToggleFavourite}
+      aria-pressed={isFavourite}
+      aria-label={isFavourite ? `Remove ${name} from favourite sources` : `Add ${name} to favourite sources`}
+      title={isFavourite ? `Favourite source: ${name}` : `Favourite ${name}`}
+      className={`-my-1 rounded px-1 py-1 transition ${isFavourite ? "text-amber-300 drop-shadow-[0_0_6px_rgb(252_211_77/0.8)]" : "text-slate-600 hover:text-amber-200"}`}
+    >
+      {isFavourite ? "★" : "☆"}
+    </button>
+  );
 }
 
 function CardActions({ isRead, isSaved, onToggleRead, onToggleSaved }: Pick<CardProps, "isRead" | "isSaved" | "onToggleRead" | "onToggleSaved">) {
@@ -316,7 +343,7 @@ function TopicTags({ topics }: { topics: string[] }) {
 const cardShell =
   "group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur transition before:absolute before:inset-y-0 before:left-0 before:w-0.5";
 
-function VideoCard({ article, now, isRead, isSaved, onOpen, onToggleRead, onToggleSaved }: CardProps) {
+function VideoCard({ article, now, isRead, isSaved, onOpen, onToggleRead, onToggleSaved, isFavourite, onToggleFavourite }: CardProps) {
   const href = safeHref(article.url);
   const thumbnail = safeThumbnail(article.thumbnail);
   return (
@@ -340,6 +367,7 @@ function VideoCard({ article, now, isRead, isSaved, onOpen, onToggleRead, onTogg
       </a>
       <div className="flex flex-1 flex-col p-3">
         <p className="truncate font-mono text-[11px] tracking-wider text-slate-500 uppercase">
+          <FavouriteButton article={article} isFavourite={isFavourite} onToggleFavourite={onToggleFavourite} />{" "}
           <span className="text-pink-300">{article.author ?? hostOf(article.url)}</span>
           <span className="text-slate-600"> / </span>
           <time dateTime={article.publishedAt}>{timeAgo(article.publishedAt, now)}</time>
@@ -362,7 +390,7 @@ function VideoCard({ article, now, isRead, isSaved, onOpen, onToggleRead, onTogg
   );
 }
 
-function ArticleCard({ article, now, isRead, isSaved, onOpen, onToggleRead, onToggleSaved }: CardProps) {
+function ArticleCard({ article, now, isRead, isSaved, onOpen, onToggleRead, onToggleSaved, isFavourite, onToggleFavourite }: CardProps) {
   const href = safeHref(article.url);
   return (
     <li
@@ -371,6 +399,7 @@ function ArticleCard({ article, now, isRead, isSaved, onOpen, onToggleRead, onTo
       }`}
     >
       <p className="font-mono text-[11px] tracking-wider text-slate-500 uppercase">
+        <FavouriteButton article={article} isFavourite={isFavourite} onToggleFavourite={onToggleFavourite} />{" "}
         <span className="text-slate-400">{hostOf(article.url)}</span>
         <span className="text-slate-600"> / </span>
         <time dateTime={article.publishedAt}>{timeAgo(article.publishedAt, now)}</time>

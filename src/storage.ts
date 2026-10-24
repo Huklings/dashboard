@@ -5,19 +5,21 @@ const KEY = "dashboard:v1";
 interface Marks {
   read: string[];
   saved: string[];
+  // Feed URLs of favourite sources.
+  favourites: string[];
 }
 
 function load(): Marks {
   try {
     const parsed = JSON.parse(localStorage.getItem(KEY) ?? "{}") as Partial<Marks>;
     const strings = (v: unknown) => (Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : []);
-    return { read: strings(parsed.read), saved: strings(parsed.saved) };
+    return { read: strings(parsed.read), saved: strings(parsed.saved), favourites: strings(parsed.favourites) };
   } catch {
-    return { read: [], saved: [] };
+    return { read: [], saved: [], favourites: [] };
   }
 }
 
-/** Read and saved marks, kept in this browser only. */
+/** Read, saved and favourite-source marks, kept in this browser only. */
 export function useMarks(knownUrls: Set<string> | null) {
   const [marks, setMarks] = useState<Marks>(load);
 
@@ -49,5 +51,7 @@ export function useMarks(knownUrls: Set<string> | null) {
     saved: new Set(marks.saved),
     setRead: (url: string, on?: boolean) => toggle("read", url, on),
     toggleSaved: (url: string) => toggle("saved", url),
+    favourites: new Set(marks.favourites),
+    toggleFavourite: (source: string) => toggle("favourites", source),
   };
 }
