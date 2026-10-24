@@ -10,6 +10,9 @@ export const ArticleSchema = z.object({
   publishedAt: z.string(),
   fetchedAt: z.string(),
   topics: z.array(z.string()),
+  // Older data files predate these fields.
+  kind: z.enum(["article", "video"]).default("article"),
+  thumbnail: z.string().optional(),
 });
 
 export const SourceStatusSchema = z.object({

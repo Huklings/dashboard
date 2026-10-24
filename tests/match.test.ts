@@ -40,5 +40,11 @@ describe("parseConfig", () => {
     expect(() => parseConfig("spaces: {work: [{name: A, include: [x]}], hobby: [{name: a, include: [y]}]}")).toThrow(/Duplicate/);
     expect(() => parseConfig("spaces: {work: [{name: A}]}")).toThrow(/needs include keywords or sources/);
     expect(() => parseConfig("spaces: {work: []}\nsources: ['file:///etc/passwd']")).toThrow(/http/);
+    expect(() => parseConfig("spaces: {work: []}\nsources: ['youtube:not-a-channel']")).toThrow(/http/);
+  });
+
+  it("expands youtube:<channel id> to the channel's video feed", () => {
+    const cfg = parseConfig("spaces: {hobby: [{name: V, sources: ['youtube:UC0123456789abcdefghijkl']}]}");
+    expect(cfg.spaces.hobby[0]?.sources).toEqual(["https://www.youtube.com/feeds/videos.xml?channel_id=UC0123456789abcdefghijkl"]);
   });
 });

@@ -6,6 +6,12 @@
 # even without a keyword match. Feeds under the top-level `sources` are only
 # matched by keywords. Articles that match no topic are dropped.
 #
+# YouTube channels: add `youtube:<channel id>` (it starts with UC) as a source.
+# New uploads show up as video cards that link to YouTube. To find the ID,
+# open the channel, click "more" in its description, then "Share channel" →
+# "Copy channel ID". Pin a channel under a topic's `sources` to get all its
+# videos in that topic.
+#
 # Placeholder topics below: replace them with your own.
 
 spaces:
@@ -24,6 +30,9 @@ spaces:
         - https://www.nasa.gov/news-release/feed/
     - name: Science
       include: [physics, biology, climate, research]
+    # - name: Maker videos
+    #   sources:
+    #     - youtube:UCxxxxxxxxxxxxxxxxxxxxxx
 
 sources:
   - https://hnrss.org/frontpage

@@ -6,6 +6,8 @@ A personal news dashboard. A scheduled GitHub Action fetches RSS and Atom feeds 
 
 Edit [`config/interests.yaml`](config/interests.yaml) on github.com and commit. The site rebuilds on every push to `main`, so changes show up within a few minutes. Articles that match no topic are dropped, and articles older than 30 days age out.
 
+To follow a YouTube channel, add `youtube:<channel id>` as a source (the ID starts with `UC`; on the channel page, open "more" in the description, then **Share channel → Copy channel ID**). New uploads appear as video cards that link to YouTube. Nothing is embedded or played on the page.
+
 Read and saved marks are stored in your browser's localStorage. They stay private but don't sync between devices.
 
 ## One-time setup
@@ -38,7 +40,7 @@ The feeds are untrusted input. The things that keep that safe:
 
 - Feed data is only handled inside the Node fetcher (`fetcher/`). It never reaches a `${{ }}` expression or a shell line in the workflow.
 - The XML parser never expands DOCTYPE entities, and it rejects external ones (no XXE or entity bombs). Each feed has a 10 s timeout and a 5 MB cap.
-- Titles and summaries are stripped to plain text, and React renders them as text. Links must be `http`/`https`; anything else, such as `javascript:`, is dropped. The built page ships a strict Content-Security-Policy.
+- Titles and summaries are stripped to plain text, and React renders them as text. Links must be `http`/`https`; anything else, such as `javascript:`, is dropped. The built page ships a strict Content-Security-Policy, which allows images only from YouTube's thumbnail host (`i.ytimg.com`). Thumbnail URLs are built from the validated video ID, never taken from the feed.
 - Workflows run with minimal `permissions`, pin third-party actions to commit SHAs, and never use `pull_request_target`. Dependabot keeps actions and npm packages current.
 
 Everything in `config/interests.yaml` and on the site is public.

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
+  <title>Example Channel</title>
+  <entry>
+    <id>yt:video:dQw4w9WgXcQ</id>
+    <yt:videoId>dQw4w9WgXcQ</yt:videoId>
+    <yt:channelId>UCxxxxxxxxxxxxxxxxxxxxxx</yt:channelId>
+    <title>Building a rocket engine &amp; testing it</title>
+    <link rel="alternate" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"/>
+    <published>2026-10-21T15:00:00+00:00</published>
+    <media:group>
+      <media:title>Building a rocket engine &amp; testing it</media:title>
+      <media:thumbnail url="https://evil.example/track.gif" width="480" height="360"/>
+      <media:description>We fire up the engine for the first time.</media:description>
+    </media:group>
+  </entry>
+  <entry>
+    <yt:videoId>"><script></yt:videoId>
+    <title>Bad id</title>
+    <link rel="alternate" href="https://www.youtube.com/watch?v=x"/>
+  </entry>
+</feed>
