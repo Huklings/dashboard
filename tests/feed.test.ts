@@ -13,6 +13,7 @@ describe("parseFeed", () => {
       title: "Critical CVE in Node.js & npm",
       summary: "A zero-day was patched.",
       publishedAt: "2026-10-23T10:00:00.000Z",
+      kind: "article",
     });
     expect(items[1]).toMatchObject({
       url: "https://example.com/news/2",
@@ -29,12 +30,27 @@ describe("parseFeed", () => {
       title: "SpaceX launches new rocket",
       summary: "Launch went well.",
       publishedAt: "2026-10-22T08:30:00.000Z",
+      kind: "article",
     });
   });
 
   it("parses RSS 1.0 (RDF)", () => {
     const items = parseFeed(fixture("rdf.xml"), "https://example.net/rss");
-    expect(items).toEqual([{ url: "https://example.net/a", title: "RDF item", summary: "", publishedAt: "2026-10-20T12:00:00.000Z" }]);
+    expect(items).toEqual([{ url: "https://example.net/a", title: "RDF item", summary: "", publishedAt: "2026-10-20T12:00:00.000Z", kind: "article" }]);
+  });
+
+  it("parses YouTube channel feeds as videos with a YouTube-hosted thumbnail", () => {
+    const items = parseFeed(fixture("youtube.xml"), "https://www.youtube.com/feeds/videos.xml?channel_id=UCxxxxxxxxxxxxxxxxxxxxxx");
+    expect(items).toEqual([
+      {
+        url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        title: "Building a rocket engine & testing it",
+        summary: "We fire up the engine for the first time.",
+        publishedAt: "2026-10-21T15:00:00.000Z",
+        kind: "video",
+        thumbnail: "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg",
+      },
+    ]);
   });
 
   it("refuses external entities (XXE)", () => {

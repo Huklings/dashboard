@@ -8,7 +8,8 @@
     ],
     "hobby": [
       "Space",
-      "Science"
+      "Science",
+      "Maker videos"
     ]
   },
   "sources": [
@@ -35,40 +36,8 @@
       "topics": [
         "Security advisories",
         "Web development"
-      ]
-    },
-    {
-      "url": "https://example.com/a/2",
-      "title": "Kubernetes 1.36 ships with stricter pod security defaults",
-      "summary": "The release tightens defaults for new clusters and deprecates several beta APIs.",
-      "source": "https://hnrss.org/frontpage",
-      "publishedAt": "2026-10-24T12:04:35.440Z",
-      "fetchedAt": "2026-10-24T12:04:35.440Z",
-      "topics": [
-        "Cloud"
-      ]
-    },
-    {
-      "url": "https://example.com/a/3",
-      "title": "Ransomware gang targets backup servers first",
-      "summary": "Researchers describe a shift toward destroying backups before encryption.",
-      "source": "https://krebsonsecurity.com/feed/",
-      "publishedAt": "2026-10-24T08:04:35.440Z",
-      "fetchedAt": "2026-10-24T08:04:35.440Z",
-      "topics": [
-        "Security advisories"
-      ]
-    },
-    {
-      "url": "https://example.com/a/4",
-      "title": "What is new in TypeScript 7",
-      "summary": "The native compiler brings large speedups to type-checking big projects.",
-      "source": "https://hnrss.org/frontpage",
-      "publishedAt": "2026-10-23T15:04:35.440Z",
-      "fetchedAt": "2026-10-23T15:04:35.440Z",
-      "topics": [
-        "Web development"
-      ]
+      ],
+      "kind": "article"
     },
     {
       "url": "https://example.com/a/5",
@@ -80,7 +49,58 @@
       "topics": [
         "Space",
         "Science"
-      ]
+      ],
+      "kind": "article"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "title": "Building a liquid-fuel rocket engine in the garage",
+      "summary": "Part 3: first hot fire test, what went wrong and the fixes for next time.",
+      "source": "https://www.youtube.com/feeds/videos.xml?channel_id=UC0123456789abcdefghijkl",
+      "publishedAt": "2026-10-24T13:37:43.257Z",
+      "fetchedAt": "2026-10-24T13:37:43.257Z",
+      "topics": [
+        "Space",
+        "Maker videos"
+      ],
+      "kind": "video",
+      "thumbnail": "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg"
+    },
+    {
+      "url": "https://example.com/a/2",
+      "title": "Kubernetes 1.36 ships with stricter pod security defaults",
+      "summary": "The release tightens defaults for new clusters and deprecates several beta APIs.",
+      "source": "https://hnrss.org/frontpage",
+      "publishedAt": "2026-10-24T12:04:35.440Z",
+      "fetchedAt": "2026-10-24T12:04:35.440Z",
+      "topics": [
+        "Cloud"
+      ],
+      "kind": "article"
+    },
+    {
+      "url": "https://example.com/a/3",
+      "title": "Ransomware gang targets backup servers first",
+      "summary": "Researchers describe a shift toward destroying backups before encryption.",
+      "source": "https://krebsonsecurity.com/feed/",
+      "publishedAt": "2026-10-24T08:04:35.440Z",
+      "fetchedAt": "2026-10-24T08:04:35.440Z",
+      "topics": [
+        "Security advisories"
+      ],
+      "kind": "article"
+    },
+    {
+      "url": "https://example.com/a/4",
+      "title": "What is new in TypeScript 7",
+      "summary": "The native compiler brings large speedups to type-checking big projects.",
+      "source": "https://hnrss.org/frontpage",
+      "publishedAt": "2026-10-23T15:04:35.440Z",
+      "fetchedAt": "2026-10-23T15:04:35.440Z",
+      "topics": [
+        "Web development"
+      ],
+      "kind": "article"
     },
     {
       "url": "https://example.com/a/6",
@@ -91,7 +111,8 @@
       "fetchedAt": "2026-10-23T11:04:35.440Z",
       "topics": [
         "Space"
-      ]
+      ],
+      "kind": "article"
     }
   ]
 }

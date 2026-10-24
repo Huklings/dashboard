@@ -7,7 +7,7 @@ const CSP = [
   "default-src 'self'",
   "script-src 'self'",
   "style-src 'self'",
-  "img-src 'self' data:",
+  "img-src 'self' data: https://i.ytimg.com",
   "connect-src 'self'",
   "object-src 'none'",
   "base-uri 'none'",

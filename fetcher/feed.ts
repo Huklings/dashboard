@@ -6,6 +6,8 @@ export interface FeedItem {
   title: string;
   summary: string;
   publishedAt: string | null;
+  kind: "article" | "video";
+  thumbnail?: string;
 }
 
 const TITLE_MAX = 300;
@@ -80,7 +82,26 @@ function build(rawUrl: string, rawTitle: string, rawSummary: string, rawDate: st
     title,
     summary: truncate(toPlainText(rawSummary), SUMMARY_MAX),
     publishedAt: toIsoDate(rawDate),
+    kind: "article",
   };
+}
+
+const YOUTUBE_VIDEO_ID = /^[A-Za-z0-9_-]{11}$/;
+
+/** YouTube channel feeds are Atom with a yt:videoId and the description under media:group. */
+function youtubeEntry(entry: Record<string, Node>, feedUrl: string): FeedItem | null {
+  const videoId = textOf(entry["yt:videoId"]);
+  if (!YOUTUBE_VIDEO_ID.test(videoId)) return null;
+  const media = (entry["media:group"] ?? {}) as Record<string, Node>;
+  const item = build(
+    `https://www.youtube.com/watch?v=${videoId}`,
+    field(entry, "title") || field(media, "media:title"),
+    field(media, "media:description"),
+    field(entry, "published", "updated"),
+    feedUrl,
+  );
+  // Built from the validated id rather than taken from the feed, so it always points at YouTube's image host.
+  return item && { ...item, kind: "video", thumbnail: `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` };
 }
 
 /** Parses RSS 2.0, RSS 1.0 (RDF) and Atom. Items without a safe link or a title are dropped. */
@@ -107,6 +128,10 @@ export function parseFeed(xml: string, feedUrl: string): FeedItem[] {
     }
   } else if (atom) {
     for (const entry of asRecords(atom.entry)) {
+      if ("yt:videoId" in entry) {
+        items.push(youtubeEntry(entry, feedUrl));
+        continue;
+      }
       items.push(
         build(atomLink(entry), field(entry, "title"), field(entry, "summary", "content"), field(entry, "published", "updated"), feedUrl),
       );

@@ -1,1 +1,33 @@
 @import "tailwindcss";
+
+@theme {
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+  --color-neon-cyan: #22e3ff;
+  --color-neon-violet: #a46bff;
+  --color-neon-pink: #ff4fd8;
+  --color-void: #05070f;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-void);
+  background-image:
+    radial-gradient(60rem 30rem at 15% -10%, rgb(34 227 255 / 0.14), transparent 60%),
+    radial-gradient(50rem 30rem at 95% 0%, rgb(164 107 255 / 0.16), transparent 60%),
+    linear-gradient(rgb(255 255 255 / 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.025) 1px, transparent 1px);
+  background-size: auto, auto, 32px 32px, 32px 32px;
+  background-attachment: fixed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -75,7 +75,14 @@ async function main() {
     console.log(`✓ ${result.source}: ${result.items.length} items`);
     for (const item of result.items) {
       const base = { url: item.url, title: item.title, summary: item.summary, source: result.source };
-      fresh.push({ ...base, publishedAt: item.publishedAt ?? fetchedAt, fetchedAt, topics: matcher.topicsFor(base) });
+      fresh.push({
+        ...base,
+        publishedAt: item.publishedAt ?? fetchedAt,
+        fetchedAt,
+        topics: matcher.topicsFor(base),
+        kind: item.kind,
+        ...(item.thumbnail ? { thumbnail: item.thumbnail } : {}),
+      });
     }
   }
 

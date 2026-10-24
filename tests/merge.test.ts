@@ -11,6 +11,7 @@ const make = (url: string, publishedAt: string, extra: Partial<Article> = {}): A
   publishedAt,
   fetchedAt: "2026-10-24T12:00:00.000Z",
   topics: ["T"],
+  kind: "article",
   ...extra,
 });
 const opts = { now, maxAgeDays: 30, maxItems: 100 };
