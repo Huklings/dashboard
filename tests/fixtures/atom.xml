@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Atom Example</title>
+  <entry>
+    <title type="html">SpaceX launches &lt;em&gt;new&lt;/em&gt; rocket</title>
+    <link rel="replies" href="https://example.org/comments/1"/>
+    <link rel="alternate" href="https://example.org/posts/1"/>
+    <summary type="html">&lt;p&gt;Launch went well.&lt;/p&gt;</summary>
+    <updated>2026-10-22T08:30:00Z</updated>
+  </entry>
+</feed>

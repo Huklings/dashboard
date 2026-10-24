@@ -1,0 +1,97 @@
+{
+  "generatedAt": "2026-10-24T16:52:35.440Z",
+  "spaces": {
+    "work": [
+      "Security advisories",
+      "Web development",
+      "Cloud"
+    ],
+    "hobby": [
+      "Space",
+      "Science"
+    ]
+  },
+  "sources": [
+    {
+      "url": "https://hnrss.org/frontpage",
+      "ok": true,
+      "items": 20
+    },
+    {
+      "url": "https://example.com/broken",
+      "ok": false,
+      "items": 0,
+      "error": "HTTP 503"
+    }
+  ],
+  "articles": [
+    {
+      "url": "https://example.com/a/1",
+      "title": "Critical CVE in popular npm package lets attackers run code",
+      "summary": "Maintainers released a patch on Friday; users should update to 4.2.1 or later.",
+      "source": "https://www.bleepingcomputer.com/feed/",
+      "publishedAt": "2026-10-24T15:04:35.440Z",
+      "fetchedAt": "2026-10-24T15:04:35.440Z",
+      "topics": [
+        "Security advisories",
+        "Web development"
+      ]
+    },
+    {
+      "url": "https://example.com/a/2",
+      "title": "Kubernetes 1.36 ships with stricter pod security defaults",
+      "summary": "The release tightens defaults for new clusters and deprecates several beta APIs.",
+      "source": "https://hnrss.org/frontpage",
+      "publishedAt": "2026-10-24T12:04:35.440Z",
+      "fetchedAt": "2026-10-24T12:04:35.440Z",
+      "topics": [
+        "Cloud"
+      ]
+    },
+    {
+      "url": "https://example.com/a/3",
+      "title": "Ransomware gang targets backup servers first",
+      "summary": "Researchers describe a shift toward destroying backups before encryption.",
+      "source": "https://krebsonsecurity.com/feed/",
+      "publishedAt": "2026-10-24T08:04:35.440Z",
+      "fetchedAt": "2026-10-24T08:04:35.440Z",
+      "topics": [
+        "Security advisories"
+      ]
+    },
+    {
+      "url": "https://example.com/a/4",
+      "title": "What is new in TypeScript 7",
+      "summary": "The native compiler brings large speedups to type-checking big projects.",
+      "source": "https://hnrss.org/frontpage",
+      "publishedAt": "2026-10-23T15:04:35.440Z",
+      "fetchedAt": "2026-10-23T15:04:35.440Z",
+      "topics": [
+        "Web development"
+      ]
+    },
+    {
+      "url": "https://example.com/a/5",
+      "title": "NASA telescope spots water vapour on distant exoplanet",
+      "summary": "The finding narrows down the planet’s atmosphere composition.",
+      "source": "https://www.nasa.gov/news-release/feed/",
+      "publishedAt": "2026-10-24T14:04:35.440Z",
+      "fetchedAt": "2026-10-24T14:04:35.440Z",
+      "topics": [
+        "Space",
+        "Science"
+      ]
+    },
+    {
+      "url": "https://example.com/a/6",
+      "title": "SpaceX completes another booster catch",
+      "summary": "The company says reuse cadence will increase next year.",
+      "source": "https://feeds.arstechnica.com/arstechnica/index",
+      "publishedAt": "2026-10-23T11:04:35.440Z",
+      "fetchedAt": "2026-10-23T11:04:35.440Z",
+      "topics": [
+        "Space"
+      ]
+    }
+  ]
+}
