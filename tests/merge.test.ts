@@ -14,7 +14,7 @@ const make = (url: string, publishedAt: string, extra: Partial<Article> = {}): A
   kind: "article",
   ...extra,
 });
-const opts = { now, maxAgeDays: 30, maxItems: 100 };
+const opts = { now, maxAgeDays: 30, maxItems: 100, sources: new Set(["https://feed.example/rss"]) };
 
 describe("mergeArticles", () => {
   it("dedupes by URL, keeps first-seen fetchedAt, and sorts newest first", () => {
@@ -35,5 +35,10 @@ describe("mergeArticles", () => {
   it("clamps publish dates far in the future to fetch time", () => {
     const [a] = mergeArticles([], [make("f", "2030-01-01T00:00:00Z")], opts);
     expect(a?.publishedAt).toBe("2026-10-24T12:00:00.000Z");
+  });
+
+  it("drops previous articles from sources no longer in the config", () => {
+    const previous = [make("gone", "2026-10-22T00:00:00Z", { source: "https://removed.example/rss" }), make("kept", "2026-10-21T00:00:00Z")];
+    expect(mergeArticles(previous, [], opts).map((a) => a.url)).toEqual(["kept"]);
   });
 });

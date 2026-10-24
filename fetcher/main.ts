@@ -89,7 +89,7 @@ async function main() {
 
   // Re-tag older articles too, so config edits apply to everything shown.
   const previous = (await loadPrevious(process.env.PREVIOUS_URL)).map((a) => ({ ...a, topics: matcher.topicsFor(a) }));
-  const articles = mergeArticles(previous, fresh, { now, maxAgeDays: 30, maxItems: 2000 });
+  const articles = mergeArticles(previous, fresh, { now, maxAgeDays: 30, maxItems: 2000, sources: new Set(sources) });
 
   const data: DataFile = {
     generatedAt: fetchedAt,
