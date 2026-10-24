@@ -1,0 +1,32 @@
+# Your interests. Edit this file on github.com and the site rebuilds.
+#
+# Each topic picks up articles whose title or summary contains one of its
+# `include` keywords (case-insensitive, whole words), unless it also contains
+# an `exclude` keyword. Feeds listed under a topic's `sources` go to that topic
+# even without a keyword match. Feeds under the top-level `sources` are only
+# matched by keywords. Articles that match no topic are dropped.
+#
+# Placeholder topics below: replace them with your own.
+
+spaces:
+  work:
+    - name: Security advisories
+      include: [CVE, vulnerability, exploit, ransomware, zero-day, patch]
+      exclude: [webinar]
+    - name: Web development
+      include: [TypeScript, JavaScript, React, Node.js, browser, CSS]
+    - name: Cloud
+      include: [AWS, Azure, Kubernetes, Terraform, serverless]
+  hobby:
+    - name: Space
+      include: [NASA, SpaceX, rocket, telescope, Mars, orbit]
+      sources:
+        - https://www.nasa.gov/news-release/feed/
+    - name: Science
+      include: [physics, biology, climate, research]
+
+sources:
+  - https://hnrss.org/frontpage
+  - https://krebsonsecurity.com/feed/
+  - https://www.bleepingcomputer.com/feed/
+  - https://feeds.arstechnica.com/arstechnica/index
