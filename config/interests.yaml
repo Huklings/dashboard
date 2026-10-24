@@ -32,6 +32,7 @@ spaces:
         - youtube:UCnVqE5aiTqVJdRxhszBaHoQ # The Fantasy Forge
         - youtube:UCSeuqv9fNSUJT5VfcmslTBg # The Grainbound (@TheGrainbound)
         - youtube:UCf5MDxxTuT1OpwOxVfG-ofg # World Anvil Worldbuilding
+        - youtube:UCuV9ve9LV0ATFKvdDWAMeAg # World in Progress (@WorldInProgressYT)
     - name: Fantasy and sci-fi
       include: [fantasy, science fiction, sci-fi, SFF, Tolkien, Sanderson, Dune, Dungeons & Dragons]
       sources:
