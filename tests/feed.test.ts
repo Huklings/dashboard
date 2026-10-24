@@ -49,6 +49,7 @@ describe("parseFeed", () => {
         publishedAt: "2026-10-21T15:00:00.000Z",
         kind: "video",
         thumbnail: "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg",
+        author: "Garage & Rockets",
       },
     ]);
   });

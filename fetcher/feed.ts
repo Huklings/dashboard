@@ -8,6 +8,7 @@ export interface FeedItem {
   publishedAt: string | null;
   kind: "article" | "video";
   thumbnail?: string;
+  author?: string;
 }
 
 const TITLE_MAX = 300;
@@ -101,7 +102,14 @@ function youtubeEntry(entry: Record<string, Node>, feedUrl: string): FeedItem | 
     feedUrl,
   );
   // Built from the validated id rather than taken from the feed, so it always points at YouTube's image host.
-  return item && { ...item, kind: "video", thumbnail: `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` };
+  if (!item) return null;
+  const author = truncate(toPlainText(field((entry.author ?? {}) as Record<string, Node>, "name")), 80);
+  return {
+    ...item,
+    kind: "video",
+    thumbnail: `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`,
+    ...(author ? { author } : {}),
+  };
 }
 
 /** Parses RSS 2.0, RSS 1.0 (RDF) and Atom. Items without a safe link or a title are dropped. */
