@@ -7,9 +7,9 @@
       "Cloud"
     ],
     "hobby": [
-      "Space",
-      "Science",
-      "Maker videos"
+      "Worldbuilding",
+      "Fantasy and sci-fi",
+      "Myth and storytelling"
     ]
   },
   "sources": [
@@ -27,6 +27,18 @@
   ],
   "articles": [
     {
+      "url": "https://example.org/wb/1",
+      "title": "How would rivers flow on a planet with two suns?",
+      "summary": "Looking for advice on hydrology for a binary-star system with long seasons.",
+      "source": "https://worldbuilding.stackexchange.com/feeds",
+      "publishedAt": "2026-10-24T15:52:31.931Z",
+      "fetchedAt": "2026-10-24T15:52:31.931Z",
+      "topics": [
+        "Worldbuilding"
+      ],
+      "kind": "article"
+    },
+    {
       "url": "https://example.com/a/1",
       "title": "Critical CVE in popular npm package lets attackers run code",
       "summary": "Maintainers released a patch on Friday; users should update to 4.2.1 or later.",
@@ -40,31 +52,18 @@
       "kind": "article"
     },
     {
-      "url": "https://example.com/a/5",
-      "title": "NASA telescope spots water vapour on distant exoplanet",
-      "summary": "The finding narrows down the planet’s atmosphere composition.",
-      "source": "https://www.nasa.gov/news-release/feed/",
-      "publishedAt": "2026-10-24T14:04:35.440Z",
-      "fetchedAt": "2026-10-24T14:04:35.440Z",
-      "topics": [
-        "Space",
-        "Science"
-      ],
-      "kind": "article"
-    },
-    {
-      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "title": "Building a liquid-fuel rocket engine in the garage",
-      "summary": "Part 3: first hot fire test, what went wrong and the fixes for next time.",
+      "url": "https://www.youtube.com/watch?v=sample00001",
+      "title": "How to build a believable tidally locked planet",
+      "summary": "",
       "source": "https://www.youtube.com/feeds/videos.xml?channel_id=UC0123456789abcdefghijkl",
-      "publishedAt": "2026-10-24T13:37:43.257Z",
-      "fetchedAt": "2026-10-24T13:37:43.257Z",
+      "publishedAt": "2026-10-24T14:52:31.931Z",
+      "fetchedAt": "2026-10-24T14:52:31.931Z",
       "topics": [
-        "Space",
-        "Maker videos"
+        "Worldbuilding"
       ],
       "kind": "video",
-      "thumbnail": "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg"
+      "thumbnail": "https://i.ytimg.com/vi/sample00001/mqdefault.jpg",
+      "author": "Artifexian"
     },
     {
       "url": "https://example.com/a/2",
@@ -79,6 +78,34 @@
       "kind": "article"
     },
     {
+      "url": "https://example.org/wb/2",
+      "title": "Five ways to make your fantasy economy feel lived-in",
+      "summary": "Trade routes, currency and scarcity give a setting texture readers notice.",
+      "source": "https://mythcreants.com/feed/",
+      "publishedAt": "2026-10-24T11:52:31.931Z",
+      "fetchedAt": "2026-10-24T11:52:31.931Z",
+      "topics": [
+        "Myth and storytelling",
+        "Fantasy and sci-fi"
+      ],
+      "kind": "article"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=sample00002",
+      "title": "Designing a magic system with real costs",
+      "summary": "",
+      "source": "https://www.youtube.com/feeds/videos.xml?channel_id=UC0123456789abcdefghijkl",
+      "publishedAt": "2026-10-24T09:52:31.931Z",
+      "fetchedAt": "2026-10-24T09:52:31.931Z",
+      "topics": [
+        "Worldbuilding",
+        "Fantasy and sci-fi"
+      ],
+      "kind": "video",
+      "thumbnail": "https://i.ytimg.com/vi/sample00002/mqdefault.jpg",
+      "author": "Hello Future Me"
+    },
+    {
       "url": "https://example.com/a/3",
       "title": "Ransomware gang targets backup servers first",
       "summary": "Researchers describe a shift toward destroying backups before encryption.",
@@ -87,6 +114,44 @@
       "fetchedAt": "2026-10-24T08:04:35.440Z",
       "topics": [
         "Security advisories"
+      ],
+      "kind": "article"
+    },
+    {
+      "url": "https://example.org/wb/3",
+      "title": "My continent map after six months of work",
+      "summary": "Full political and climate map, plus notes on how the mountain ranges formed.",
+      "source": "https://www.reddit.com/r/worldbuilding/top/.rss?t=day",
+      "publishedAt": "2026-10-24T06:52:31.931Z",
+      "fetchedAt": "2026-10-24T06:52:31.931Z",
+      "topics": [
+        "Worldbuilding"
+      ],
+      "kind": "article"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=sample00003",
+      "title": "Speculative evolution: life on a cold moon",
+      "summary": "",
+      "source": "https://www.youtube.com/feeds/videos.xml?channel_id=UC0123456789abcdefghijkl",
+      "publishedAt": "2026-10-23T21:52:31.931Z",
+      "fetchedAt": "2026-10-23T21:52:31.931Z",
+      "topics": [
+        "Worldbuilding"
+      ],
+      "kind": "video",
+      "thumbnail": "https://i.ytimg.com/vi/sample00003/mqdefault.jpg",
+      "author": "Biblaridion"
+    },
+    {
+      "url": "https://example.org/wb/4",
+      "title": "New epic fantasy series announced for next spring",
+      "summary": "The trilogy follows a cartographer mapping a world that keeps changing.",
+      "source": "https://reactormag.com/feed/",
+      "publishedAt": "2026-10-23T15:52:31.931Z",
+      "fetchedAt": "2026-10-23T15:52:31.931Z",
+      "topics": [
+        "Fantasy and sci-fi"
       ],
       "kind": "article"
     },
@@ -103,16 +168,33 @@
       "kind": "article"
     },
     {
-      "url": "https://example.com/a/6",
-      "title": "SpaceX completes another booster catch",
-      "summary": "The company says reuse cadence will increase next year.",
-      "source": "https://feeds.arstechnica.com/arstechnica/index",
-      "publishedAt": "2026-10-23T11:04:35.440Z",
-      "fetchedAt": "2026-10-23T11:04:35.440Z",
+      "url": "https://www.youtube.com/watch?v=sample00004",
+      "title": "The mythology behind the trickster archetype",
+      "summary": "",
+      "source": "https://www.youtube.com/feeds/videos.xml?channel_id=UC0123456789abcdefghijkl",
+      "publishedAt": "2026-10-23T11:52:31.931Z",
+      "fetchedAt": "2026-10-23T11:52:31.931Z",
       "topics": [
-        "Space"
+        "Myth and storytelling"
       ],
-      "kind": "article"
+      "kind": "video",
+      "thumbnail": "https://i.ytimg.com/vi/sample00004/mqdefault.jpg",
+      "author": "Overly Sarcastic Productions"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=sample00005",
+      "title": "Why some fictional languages feel real",
+      "summary": "",
+      "source": "https://www.youtube.com/feeds/videos.xml?channel_id=UC0123456789abcdefghijkl",
+      "publishedAt": "2026-10-22T15:52:31.931Z",
+      "fetchedAt": "2026-10-22T15:52:31.931Z",
+      "topics": [
+        "Myth and storytelling",
+        "Worldbuilding"
+      ],
+      "kind": "video",
+      "thumbnail": "https://i.ytimg.com/vi/sample00005/mqdefault.jpg",
+      "author": "Tale Foundry"
     }
   ]
 }

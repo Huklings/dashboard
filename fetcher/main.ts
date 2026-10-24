@@ -82,6 +82,7 @@ async function main() {
         topics: matcher.topicsFor(base),
         kind: item.kind,
         ...(item.thumbnail ? { thumbnail: item.thumbnail } : {}),
+        ...(item.author ? { author: item.author } : {}),
       });
     }
   }

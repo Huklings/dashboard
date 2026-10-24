@@ -92,6 +92,18 @@ export function App() {
     );
   }, [inSpace, topic, filter, query, marks.read, marks.saved]);
 
+  const videos = visible.filter((a) => a.kind === "video");
+  const articles = visible.filter((a) => a.kind !== "video");
+  const cardProps = (a: Article): CardProps => ({
+    article: a,
+    now,
+    isRead: marks.read.has(a.url),
+    isSaved: marks.saved.has(a.url),
+    onOpen: () => marks.setRead(a.url, true),
+    onToggleRead: () => marks.setRead(a.url),
+    onToggleSaved: () => marks.toggleSaved(a.url),
+  });
+
   const failing = data?.sources.filter((s) => !s.ok) ?? [];
   const unreadCount = inSpace.filter((a) => !marks.read.has(a.url)).length;
 
@@ -220,23 +232,42 @@ export function App() {
               {spaceTopics.length === 0 ? "No topics in this space yet. Add some in config/interests.yaml." : "No signal. Nothing matches right now."}
             </p>
           )}
-          <ul className="grid gap-3">
-            {visible.map((a) => (
-              <ArticleCard
-                key={a.url}
-                article={a}
-                now={now}
-                isRead={marks.read.has(a.url)}
-                isSaved={marks.saved.has(a.url)}
-                onOpen={() => marks.setRead(a.url, true)}
-                onToggleRead={() => marks.setRead(a.url)}
-                onToggleSaved={() => marks.toggleSaved(a.url)}
-              />
-            ))}
-          </ul>
+          {videos.length > 0 && (
+            <section aria-labelledby="videos-heading">
+              <SectionHeading id="videos-heading" label="Video feed" count={videos.length} accent="pink" />
+              <ul className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-4 pb-3 sm:mx-0 sm:px-0 sm:[mask-image:linear-gradient(to_right,black_90%,transparent)] [scrollbar-color:rgb(255_79_216/0.4)_transparent] [scrollbar-width:thin]">
+                {videos.map((a) => (
+                  <VideoCard key={a.url} {...cardProps(a)} />
+                ))}
+              </ul>
+            </section>
+          )}
+          {filter !== "videos" && articles.length > 0 && (
+            <section aria-labelledby="articles-heading" className={videos.length > 0 ? "mt-6" : ""}>
+              <SectionHeading id="articles-heading" label="Articles" count={articles.length} accent="cyan" />
+              <ul className="grid gap-3 md:grid-cols-2">
+                {articles.map((a) => (
+                  <ArticleCard key={a.url} {...cardProps(a)} />
+                ))}
+              </ul>
+            </section>
+          )}
         </main>
       </div>
     </div>
+  );
+}
+
+function SectionHeading({ id, label, count, accent }: { id: string; label: string; count: number; accent: "cyan" | "pink" }) {
+  const color = accent === "pink" ? "text-neon-pink" : "text-neon-cyan";
+  const line = accent === "pink" ? "from-neon-pink/50" : "from-neon-cyan/50";
+  return (
+    <h2 id={id} className="mb-3 flex items-center gap-3 font-mono text-xs tracking-[0.25em] text-slate-400 uppercase">
+      <span className={color}>▸</span>
+      {label}
+      <span className="text-slate-600">{count}</span>
+      <span className={`h-px flex-1 bg-gradient-to-r ${line} to-transparent`} aria-hidden="true" />
+    </h2>
   );
 }
 
@@ -250,79 +281,113 @@ interface CardProps {
   onToggleSaved: () => void;
 }
 
-function ArticleCard({ article, now, isRead, isSaved, onOpen, onToggleRead, onToggleSaved }: CardProps) {
-  const href = safeHref(article.url);
-  const isVideo = article.kind === "video";
-  const thumbnail = isVideo ? safeThumbnail(article.thumbnail) : undefined;
-  const accent = isVideo ? "before:bg-neon-pink" : "before:bg-neon-cyan";
+function CardActions({ isRead, isSaved, onToggleRead, onToggleSaved }: Pick<CardProps, "isRead" | "isSaved" | "onToggleRead" | "onToggleSaved">) {
+  return (
+    <span className="ml-auto flex shrink-0 gap-1 font-mono text-[11px] tracking-wider uppercase">
+      <button type="button" onClick={onToggleRead} className="rounded px-2 py-1 text-slate-500 transition hover:bg-white/5 hover:text-slate-200">
+        {isRead ? "Unread" : "Read"}
+      </button>
+      <button
+        type="button"
+        onClick={onToggleSaved}
+        aria-pressed={isSaved}
+        className={`rounded px-2 py-1 transition ${
+          isSaved ? "bg-neon-cyan/15 text-neon-cyan ring-1 ring-neon-cyan/40" : "text-slate-500 hover:bg-white/5 hover:text-slate-200"
+        }`}
+      >
+        {isSaved ? "★ Saved" : "☆ Save"}
+      </button>
+    </span>
+  );
+}
 
+function TopicTags({ topics }: { topics: string[] }) {
+  return (
+    <>
+      {topics.map((t) => (
+        <span key={t} className="rounded border border-neon-violet/30 bg-neon-violet/10 px-1.5 py-0.5 font-mono text-[10px] tracking-wider text-violet-300 uppercase">
+          {t}
+        </span>
+      ))}
+    </>
+  );
+}
+
+const cardShell =
+  "group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur transition before:absolute before:inset-y-0 before:left-0 before:w-0.5";
+
+function VideoCard({ article, now, isRead, isSaved, onOpen, onToggleRead, onToggleSaved }: CardProps) {
+  const href = safeHref(article.url);
+  const thumbnail = safeThumbnail(article.thumbnail);
   return (
     <li
-      className={`group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur transition hover:border-neon-cyan/40 hover:bg-white/[0.05] hover:shadow-[0_0_30px_-12px] hover:shadow-neon-cyan/60 before:absolute before:inset-y-0 before:left-0 before:w-0.5 ${
-        isRead ? "opacity-50 before:opacity-0" : `${accent} before:opacity-80`
+      className={`${cardShell} flex w-64 shrink-0 snap-start flex-col hover:border-neon-pink/50 hover:shadow-[0_0_30px_-12px] hover:shadow-neon-pink/70 sm:w-72 ${
+        isRead ? "opacity-50 before:opacity-0" : "before:bg-neon-pink before:opacity-80"
       }`}
     >
-      <div className="flex flex-col gap-4 p-4 sm:flex-row sm:p-5">
-        {thumbnail && (
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={onOpen}
-            tabIndex={-1}
-            aria-hidden="true"
-            className="relative block shrink-0 self-start overflow-hidden rounded-lg ring-1 ring-white/10 sm:w-48"
-          >
-            <img src={thumbnail} alt="" loading="lazy" referrerPolicy="no-referrer" className="block aspect-video w-full object-cover transition group-hover:scale-105" />
-            <span className="absolute inset-0 flex items-center justify-center bg-black/20">
-              <span className="flex size-10 items-center justify-center rounded-full bg-black/60 text-white ring-1 ring-neon-pink/60 shadow-[0_0_20px_-2px] shadow-neon-pink/70">
-                ▶
-              </span>
-            </span>
-          </a>
+      <a href={href} target="_blank" rel="noopener noreferrer" onClick={onOpen} className="relative block">
+        {thumbnail ? (
+          <img src={thumbnail} alt="" loading="lazy" referrerPolicy="no-referrer" className="block aspect-video w-full object-cover transition group-hover:scale-105" />
+        ) : (
+          <span className="block aspect-video w-full bg-neon-pink/10" />
         )}
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[11px] tracking-wider text-slate-500 uppercase">
-            {isVideo && <span className="rounded border border-neon-pink/40 bg-neon-pink/10 px-1.5 py-0.5 text-pink-300">Video</span>}
-            <span className="text-slate-400">{hostOf(article.url)}</span>
-            <span aria-hidden="true" className="text-slate-600">
-              /
-            </span>
-            <time dateTime={article.publishedAt}>{timeAgo(article.publishedAt, now)}</time>
-          </div>
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={onOpen}
-            className="mt-1.5 block text-base leading-snug font-semibold text-slate-100 transition hover:text-neon-cyan sm:text-lg"
-          >
-            {article.title}
-          </a>
-          {article.summary && <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-400">{article.summary}</p>}
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            {article.topics.map((t) => (
-              <span key={t} className="rounded border border-neon-violet/30 bg-neon-violet/10 px-1.5 py-0.5 font-mono text-[10px] tracking-wider text-violet-300 uppercase">
-                {t}
-              </span>
-            ))}
-            <span className="ml-auto flex gap-1 font-mono text-[11px] tracking-wider uppercase">
-              <button type="button" onClick={onToggleRead} className="rounded px-2 py-1 text-slate-500 transition hover:bg-white/5 hover:text-slate-200">
-                {isRead ? "Mark unread" : "Mark read"}
-              </button>
-              <button
-                type="button"
-                onClick={onToggleSaved}
-                aria-pressed={isSaved}
-                className={`rounded px-2 py-1 transition ${
-                  isSaved ? "bg-neon-cyan/15 text-neon-cyan ring-1 ring-neon-cyan/40" : "text-slate-500 hover:bg-white/5 hover:text-slate-200"
-                }`}
-              >
-                {isSaved ? "★ Saved" : "☆ Save"}
-              </button>
-            </span>
-          </div>
+        <span className="absolute inset-0 flex items-center justify-center bg-black/20" aria-hidden="true">
+          <span className="flex size-10 items-center justify-center rounded-full bg-black/60 text-white ring-1 ring-neon-pink/60 shadow-[0_0_20px_-2px] shadow-neon-pink/70">
+            ▶
+          </span>
+        </span>
+        <span className="sr-only">{article.title}</span>
+      </a>
+      <div className="flex flex-1 flex-col p-3">
+        <p className="truncate font-mono text-[11px] tracking-wider text-slate-500 uppercase">
+          <span className="text-pink-300">{article.author ?? hostOf(article.url)}</span>
+          <span className="text-slate-600"> / </span>
+          <time dateTime={article.publishedAt}>{timeAgo(article.publishedAt, now)}</time>
+        </p>
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={onOpen}
+          tabIndex={-1}
+          className="mt-1 line-clamp-2 text-sm leading-snug font-semibold text-slate-100 transition hover:text-neon-pink"
+        >
+          {article.title}
+        </a>
+        <div className="mt-auto flex items-center pt-2">
+          <CardActions isRead={isRead} isSaved={isSaved} onToggleRead={onToggleRead} onToggleSaved={onToggleSaved} />
         </div>
+      </div>
+    </li>
+  );
+}
+
+function ArticleCard({ article, now, isRead, isSaved, onOpen, onToggleRead, onToggleSaved }: CardProps) {
+  const href = safeHref(article.url);
+  return (
+    <li
+      className={`${cardShell} flex flex-col p-4 hover:border-neon-cyan/40 hover:bg-white/[0.05] hover:shadow-[0_0_30px_-12px] hover:shadow-neon-cyan/60 ${
+        isRead ? "opacity-50 before:opacity-0" : "before:bg-neon-cyan before:opacity-80"
+      }`}
+    >
+      <p className="font-mono text-[11px] tracking-wider text-slate-500 uppercase">
+        <span className="text-slate-400">{hostOf(article.url)}</span>
+        <span className="text-slate-600"> / </span>
+        <time dateTime={article.publishedAt}>{timeAgo(article.publishedAt, now)}</time>
+      </p>
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={onOpen}
+        className="mt-1.5 block leading-snug font-semibold text-slate-100 transition hover:text-neon-cyan"
+      >
+        {article.title}
+      </a>
+      {article.summary && <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-400">{article.summary}</p>}
+      <div className="mt-auto flex flex-wrap items-center gap-2 pt-3">
+        <TopicTags topics={article.topics} />
+        <CardActions isRead={isRead} isSaved={isSaved} onToggleRead={onToggleRead} onToggleSaved={onToggleSaved} />
       </div>
     </li>
   );

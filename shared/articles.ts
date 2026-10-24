@@ -13,6 +13,8 @@ export const ArticleSchema = z.object({
   // Older data files predate these fields.
   kind: z.enum(["article", "video"]).default("article"),
   thumbnail: z.string().optional(),
+  // Channel name for videos.
+  author: z.string().optional(),
 });
 
 export const SourceStatusSchema = z.object({

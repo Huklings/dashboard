@@ -7,12 +7,10 @@
 # matched by keywords. Articles that match no topic are dropped.
 #
 # YouTube channels: add `youtube:<channel id>` (it starts with UC) as a source.
-# New uploads show up as video cards that link to YouTube. To find the ID,
+# New uploads show up in the video row and link to YouTube. To find the ID,
 # open the channel, click "more" in its description, then "Share channel" →
 # "Copy channel ID". Pin a channel under a topic's `sources` to get all its
 # videos in that topic.
-#
-# Placeholder topics below: replace them with your own.
 
 spaces:
   work:
@@ -24,18 +22,27 @@ spaces:
     - name: Cloud
       include: [AWS, Azure, Kubernetes, Terraform, serverless]
   hobby:
-    - name: Space
-      include: [NASA, SpaceX, rocket, telescope, Mars, orbit]
+    - name: Worldbuilding
+      include: [worldbuilding, world-building, magic system, magic systems, conlang, conlangs, fantasy map, fictional world, lore]
       sources:
-        - https://www.nasa.gov/news-release/feed/
-    - name: Science
-      include: [physics, biology, climate, research]
-    # - name: Maker videos
-    #   sources:
-    #     - youtube:UCxxxxxxxxxxxxxxxxxxxxxx
+        - https://worldbuilding.stackexchange.com/feeds
+        - https://www.reddit.com/r/worldbuilding/top/.rss?t=day
+        - youtube:UCeh-pJYRZTBJDXMNZeWSUVA # Artifexian
+        - youtube:UCMjTcpv56G_W0FRIdPHBn4A # Biblaridion
+    - name: Fantasy and sci-fi
+      include: [fantasy, science fiction, sci-fi, SFF, Tolkien, Sanderson, Dune, Dungeons & Dragons]
+      sources:
+        - youtube:UCFQMO-YL87u-6Rt8hIVsRjA # Hello Future Me
+    - name: Myth and storytelling
+      include: [mythology, myth, myths, folklore, legend, legends, storytelling, trope, tropes]
+      sources:
+        - https://mythcreants.com/feed/
+        - youtube:UC2JZfLZcZCgVvTMKjo2_BwA # Tale Foundry
+        - youtube:UCodbH5mUeF-m_BsNueRDjcw # Overly Sarcastic Productions
 
 sources:
   - https://hnrss.org/frontpage
   - https://krebsonsecurity.com/feed/
   - https://www.bleepingcomputer.com/feed/
   - https://feeds.arstechnica.com/arstechnica/index
+  - https://reactormag.com/feed/
