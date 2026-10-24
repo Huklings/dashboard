@@ -4,6 +4,8 @@ export interface MergeOptions {
   now: Date;
   maxAgeDays: number;
   maxItems: number;
+  /** Sources still in the config; previous articles from any other source are dropped. */
+  sources: ReadonlySet<string>;
 }
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -11,11 +13,12 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 /**
  * Combines this run's articles with the previous run's. Deduplicates by URL
  * (fresh data wins, but the first-seen fetchedAt is kept), drops anything
- * older than maxAgeDays and keeps the newest maxItems.
+ * older than maxAgeDays, drops previous articles whose source was removed from
+ * the config and keeps the newest maxItems.
  */
 export function mergeArticles(previous: Article[], fresh: Article[], opts: MergeOptions): Article[] {
   const byUrl = new Map<string, Article>();
-  for (const article of previous) byUrl.set(article.url, article);
+  for (const article of previous) if (opts.sources.has(article.source)) byUrl.set(article.url, article);
   for (const article of fresh) {
     const old = byUrl.get(article.url);
     byUrl.set(article.url, old ? { ...article, fetchedAt: old.fetchedAt } : article);
