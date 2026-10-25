@@ -8,6 +8,8 @@ Edit [`config/interests.yaml`](config/interests.yaml) on github.com and commit. 
 
 To follow a YouTube channel, add `youtube:<channel id>` as a source (the ID starts with `UC`; on the channel page, open "more" in the description, then **Share channel → Copy channel ID**). New uploads appear in the scrolling video row at the top and link to YouTube. Nothing is embedded or played on the page.
 
+For exploited CVEs, add `cisa:kev` as a source. It pulls CISA's [Known Exploited Vulnerabilities](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) catalog (CVEs seen exploited in the wild, usually a few a day) and shows them as CVE cards with the vendor, product and CISA's fix-by date. Links go to the CVE's NVD page.
+
 Read and saved marks are stored in your browser's localStorage. They stay private but don't sync between devices.
 
 ## One-time setup

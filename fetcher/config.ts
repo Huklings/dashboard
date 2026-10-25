@@ -1,12 +1,14 @@
 import { readFile } from "node:fs/promises";
 import { parse } from "yaml";
 import { z } from "zod";
+import { KEV_URL } from "./kev";
 import { safeUrl } from "./text";
 
 const YOUTUBE_CHANNEL = /^youtube:(UC[A-Za-z0-9_-]{22})$/;
 
-/** Expands shorthands; `youtube:UC…` becomes that channel's video feed. */
+/** Expands shorthands: `youtube:UC…` becomes that channel's video feed, `cisa:kev` the KEV catalog. */
 export function expandSource(source: string): string {
+  if (source === "cisa:kev") return KEV_URL;
   const channel = YOUTUBE_CHANNEL.exec(source)?.[1];
   return channel ? `https://www.youtube.com/feeds/videos.xml?channel_id=${channel}` : source;
 }
@@ -15,7 +17,7 @@ const FeedUrl = z
   .string()
   .trim()
   .transform(expandSource)
-  .refine((s) => safeUrl(s) !== null, { message: "must be an http(s) URL or youtube:<channel id>" });
+  .refine((s) => safeUrl(s) !== null, { message: "must be an http(s) URL, youtube:<channel id> or cisa:kev" });
 
 const TopicSchema = z.object({
   name: z.string().trim().min(1).max(60),

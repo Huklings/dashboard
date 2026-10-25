@@ -11,9 +11,20 @@
 # open the channel, click "more" in its description, then "Share channel" →
 # "Copy channel ID". Pin a channel under a topic's `sources` to get all its
 # videos in that topic.
+#
+# CVEs: `cisa:kev` is CISA's Known Exploited Vulnerabilities catalog, the CVEs
+# seen exploited in the wild (a handful a day). They show up as CVE cards.
 
 spaces:
   work:
+    - name: Exploited CVEs
+      sources: [cisa:kev]
+    - name: Microsoft Defender
+      include: [Microsoft Defender, Defender XDR, Defender for Endpoint, Defender for Office 365, Defender for Cloud, Defender for Identity, Windows Defender]
+      sources:
+        - https://techcommunity.microsoft.com/t5/s/gxcuf89792/rss/board?board.id=MicrosoftThreatProtectionBlog # Defender XDR blog
+        - https://techcommunity.microsoft.com/t5/s/gxcuf89792/rss/board?board.id=MicrosoftDefenderATPBlog # Defender for Endpoint blog
+        - https://techcommunity.microsoft.com/t5/s/gxcuf89792/rss/board?board.id=MicrosoftDefenderCloudBlog # Defender for Cloud blog
     - name: Security advisories
       include: [CVE, vulnerability, exploit, ransomware, zero-day, patch]
       exclude: [webinar]
@@ -45,6 +56,7 @@ spaces:
         - youtube:UCodbH5mUeF-m_BsNueRDjcw # Overly Sarcastic Productions
 
 sources:
+  - https://www.microsoft.com/en-us/security/blog/feed/ # Microsoft Security blog, keyword-matched
   - https://hnrss.org/frontpage
   - https://krebsonsecurity.com/feed/
   - https://www.bleepingcomputer.com/feed/

@@ -4,6 +4,7 @@ import { DataFileSchema, type Article, type DataFile, type SourceStatus } from "
 import { allSources, loadConfig } from "./config";
 import { parseFeed } from "./feed";
 import { fetchText } from "./http";
+import { KEV_URL, parseKev } from "./kev";
 import { createMatcher } from "./match";
 import { mergeArticles } from "./merge";
 import { safeUrl } from "./text";
@@ -59,7 +60,8 @@ async function main() {
 
   const results = await mapLimit(sources, CONCURRENCY, async (source) => {
     try {
-      return { source, items: parseFeed(await fetchText(source, FEED_LIMITS), source) };
+      const body = await fetchText(source, FEED_LIMITS);
+      return { source, items: source === KEV_URL ? parseKev(body) : parseFeed(body, source) };
     } catch (err) {
       return { source, error: errorMessage(err) };
     }
@@ -83,6 +85,7 @@ async function main() {
         kind: item.kind,
         ...(item.thumbnail ? { thumbnail: item.thumbnail } : {}),
         ...(item.author ? { author: item.author } : {}),
+        ...(item.cve ? { cve: item.cve } : {}),
       });
     }
   }

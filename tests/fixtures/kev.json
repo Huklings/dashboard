@@ -1,0 +1,60 @@
+{
+  "title": "CISA Catalog of Known Exploited Vulnerabilities",
+  "catalogVersion": "2026.10.24",
+  "dateReleased": "2026-10-24T17:00:00.000Z",
+  "count": 5,
+  "vulnerabilities": [
+    {
+      "cveID": "CVE-2026-11111",
+      "vendorProject": "Acme",
+      "product": "Gateway",
+      "vulnerabilityName": "Acme Gateway <b>Path Traversal</b> Vulnerability",
+      "dateAdded": "2026-10-20",
+      "shortDescription": "Acme Gateway contains a path traversal vulnerability &amp; more.",
+      "requiredAction": "Apply mitigations per vendor instructions.",
+      "dueDate": "2026-11-10",
+      "knownRansomwareCampaignUse": "Unknown",
+      "notes": "",
+      "cwes": ["CWE-22"]
+    },
+    {
+      "cveID": "CVE-2026-22222",
+      "vendorProject": "Contoso",
+      "product": "Mail Server",
+      "vulnerabilityName": "Contoso Mail Server Remote Code Execution Vulnerability",
+      "dateAdded": "2026-10-23",
+      "shortDescription": "Contoso Mail Server allows unauthenticated remote code execution.",
+      "requiredAction": "Apply updates.",
+      "dueDate": "2026-11-13",
+      "knownRansomwareCampaignUse": "Known",
+      "notes": "",
+      "cwes": []
+    },
+    {
+      "cveID": "javascript:alert(1)",
+      "vendorProject": "Evil",
+      "product": "Link",
+      "vulnerabilityName": "Bad ID",
+      "dateAdded": "2026-10-24",
+      "shortDescription": "Should be skipped.",
+      "dueDate": "2026-11-14"
+    },
+    {
+      "cveID": "CVE-2026-33333",
+      "vendorProject": "Fabrikam",
+      "product": "VPN",
+      "vulnerabilityName": "Fabrikam VPN Auth Bypass",
+      "dateAdded": "not a date",
+      "shortDescription": "Should be skipped."
+    },
+    {
+      "cveID": "CVE-2026-44444",
+      "vendorProject": "Initech",
+      "product": "TPS",
+      "vulnerabilityName": "Initech TPS Deserialization Vulnerability",
+      "dateAdded": "2026-10-22",
+      "shortDescription": "No due date given.",
+      "dueDate": "soon"
+    }
+  ]
+}
