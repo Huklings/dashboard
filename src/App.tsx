@@ -95,6 +95,13 @@ export function App() {
   const videos = visible.filter((a) => a.kind === "video");
   const cves = visible.filter((a) => a.kind === "cve");
   const articles = visible.filter((a) => a.kind === "article");
+  // Work news is split into one column per topic; each article sits under the first of its topics.
+  const columns =
+    space === "work" && !topic
+      ? spaceTopics
+          .map((t) => ({ topic: t, items: articles.filter((a) => a.topics.find((x) => spaceTopics.includes(x)) === t) }))
+          .filter((c) => c.items.length > 0)
+      : null;
   const cardProps = (a: Article): CardProps => ({
     article: a,
     now,
@@ -110,7 +117,7 @@ export function App() {
 
   return (
     <div className="min-h-screen text-slate-200 selection:bg-neon-cyan/30">
-      <div className="mx-auto max-w-5xl px-4 py-8 sm:py-10">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:py-10">
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="font-mono text-[11px] tracking-[0.3em] text-neon-cyan/70 uppercase">// signal feed</p>
@@ -243,25 +250,46 @@ export function App() {
               </ul>
             </section>
           )}
-          {filter !== "videos" && cves.length > 0 && (
-            <section aria-labelledby="cves-heading" className={videos.length > 0 ? "mt-6" : ""}>
-              <SectionHeading id="cves-heading" label="Exploited in the wild" count={cves.length} accent="red" />
-              <ul className="grid gap-3 md:grid-cols-2">
-                {cves.map((a) => (
-                  <CveCard key={a.url} {...cardProps(a)} />
-                ))}
-              </ul>
-            </section>
-          )}
-          {filter !== "videos" && articles.length > 0 && (
-            <section aria-labelledby="articles-heading" className={videos.length > 0 || cves.length > 0 ? "mt-6" : ""}>
-              <SectionHeading id="articles-heading" label="Articles" count={articles.length} accent="cyan" />
-              <ul className="grid gap-3 md:grid-cols-2">
-                {articles.map((a) => (
-                  <ArticleCard key={a.url} {...cardProps(a)} />
-                ))}
-              </ul>
-            </section>
+          {filter !== "videos" && (cves.length > 0 || articles.length > 0) && (
+            <div className={`grid gap-6 ${videos.length > 0 ? "mt-6" : ""} ${cves.length > 0 ? "lg:grid-cols-[minmax(0,1fr)_22rem]" : ""}`}>
+              {cves.length > 0 && (
+                <aside aria-labelledby="cves-heading" className="lg:order-last">
+                  <SectionHeading id="cves-heading" label="Exploited in the wild" count={cves.length} accent="red" />
+                  <ul className="space-y-3">
+                    {cves.map((a) => (
+                      <CveCard key={a.url} {...cardProps(a)} />
+                    ))}
+                  </ul>
+                </aside>
+              )}
+              <div className="min-w-0">
+                {columns ? (
+                  <div className="grid gap-6 md:grid-cols-[repeat(auto-fill,minmax(17rem,1fr))]">
+                    {columns.map((col, i) => (
+                      <section key={col.topic} aria-labelledby={`column-${i}`}>
+                        <SectionHeading id={`column-${i}`} label={col.topic} count={col.items.length} accent="cyan" />
+                        <ul className="space-y-3">
+                          {col.items.map((a) => (
+                            <ArticleCard key={a.url} {...cardProps(a)} />
+                          ))}
+                        </ul>
+                      </section>
+                    ))}
+                  </div>
+                ) : (
+                  articles.length > 0 && (
+                    <section aria-labelledby="articles-heading">
+                      <SectionHeading id="articles-heading" label="Articles" count={articles.length} accent="cyan" />
+                      <ul className="grid gap-3 md:grid-cols-2">
+                        {articles.map((a) => (
+                          <ArticleCard key={a.url} {...cardProps(a)} />
+                        ))}
+                      </ul>
+                    </section>
+                  )
+                )}
+              </div>
+            </div>
           )}
         </main>
       </div>
