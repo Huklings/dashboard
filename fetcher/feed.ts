@@ -1,4 +1,5 @@
 import { XMLParser } from "fast-xml-parser";
+import type { CveInfo } from "../shared/articles";
 import { safeUrl, toPlainText, truncate } from "./text";
 
 export interface FeedItem {
@@ -6,9 +7,10 @@ export interface FeedItem {
   title: string;
   summary: string;
   publishedAt: string | null;
-  kind: "article" | "video";
+  kind: "article" | "video" | "cve";
   thumbnail?: string;
   author?: string;
+  cve?: CveInfo;
 }
 
 const TITLE_MAX = 300;

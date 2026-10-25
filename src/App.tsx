@@ -93,7 +93,8 @@ export function App() {
   }, [inSpace, topic, filter, query, marks.read, marks.saved]);
 
   const videos = visible.filter((a) => a.kind === "video");
-  const articles = visible.filter((a) => a.kind !== "video");
+  const cves = visible.filter((a) => a.kind === "cve");
+  const articles = visible.filter((a) => a.kind === "article");
   const cardProps = (a: Article): CardProps => ({
     article: a,
     now,
@@ -242,8 +243,18 @@ export function App() {
               </ul>
             </section>
           )}
+          {filter !== "videos" && cves.length > 0 && (
+            <section aria-labelledby="cves-heading" className={videos.length > 0 ? "mt-6" : ""}>
+              <SectionHeading id="cves-heading" label="Exploited in the wild" count={cves.length} accent="red" />
+              <ul className="grid gap-3 md:grid-cols-2">
+                {cves.map((a) => (
+                  <CveCard key={a.url} {...cardProps(a)} />
+                ))}
+              </ul>
+            </section>
+          )}
           {filter !== "videos" && articles.length > 0 && (
-            <section aria-labelledby="articles-heading" className={videos.length > 0 ? "mt-6" : ""}>
+            <section aria-labelledby="articles-heading" className={videos.length > 0 || cves.length > 0 ? "mt-6" : ""}>
               <SectionHeading id="articles-heading" label="Articles" count={articles.length} accent="cyan" />
               <ul className="grid gap-3 md:grid-cols-2">
                 {articles.map((a) => (
@@ -258,9 +269,14 @@ export function App() {
   );
 }
 
-function SectionHeading({ id, label, count, accent }: { id: string; label: string; count: number; accent: "cyan" | "pink" }) {
-  const color = accent === "pink" ? "text-neon-pink" : "text-neon-cyan";
-  const line = accent === "pink" ? "from-neon-pink/50" : "from-neon-cyan/50";
+const ACCENTS = {
+  cyan: { color: "text-neon-cyan", line: "from-neon-cyan/50" },
+  pink: { color: "text-neon-pink", line: "from-neon-pink/50" },
+  red: { color: "text-rose-400", line: "from-rose-400/50" },
+};
+
+function SectionHeading({ id, label, count, accent }: { id: string; label: string; count: number; accent: keyof typeof ACCENTS }) {
+  const { color, line } = ACCENTS[accent];
   return (
     <h2 id={id} className="mb-3 flex items-center gap-3 font-mono text-xs tracking-[0.25em] text-slate-400 uppercase">
       <span className={color}>▸</span>
@@ -387,6 +403,65 @@ function ArticleCard({ article, now, isRead, isSaved, onOpen, onToggleRead, onTo
       {article.summary && <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-400">{article.summary}</p>}
       <div className="mt-auto flex flex-wrap items-center gap-2 pt-3">
         <TopicTags topics={article.topics} />
+        <CardActions isRead={isRead} isSaved={isSaved} onToggleRead={onToggleRead} onToggleSaved={onToggleSaved} />
+      </div>
+    </li>
+  );
+}
+
+// KEV due dates are plain calendar dates; compare them as whole UTC days.
+function dueLabel(dueDate: string, now: number): { text: string; overdue: boolean } {
+  const days = Math.round((Date.parse(`${dueDate}T00:00:00Z`) - now) / 86_400_000);
+  return days < 0 ? { text: `CISA due ${-days}d ago`, overdue: true } : { text: days === 0 ? "CISA due today" : `CISA due in ${days}d`, overdue: false };
+}
+
+function CveCard({ article, now, isRead, isSaved, onOpen, onToggleRead, onToggleSaved }: CardProps) {
+  const href = safeHref(article.url);
+  const cve = article.cve;
+  const due = cve?.dueDate ? dueLabel(cve.dueDate, now) : null;
+  return (
+    <li
+      className={`${cardShell} flex flex-col p-4 hover:border-rose-400/40 hover:bg-white/[0.05] hover:shadow-[0_0_30px_-12px] hover:shadow-rose-400/60 ${
+        isRead ? "opacity-50 before:opacity-0" : "before:bg-rose-400 before:opacity-80"
+      }`}
+    >
+      <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[11px] tracking-wider text-slate-500 uppercase">
+        <span className="font-semibold text-rose-300">{cve?.id ?? hostOf(article.url)}</span>
+        <span className="text-slate-600">/</span>
+        <span>
+          added <time dateTime={article.publishedAt}>{timeAgo(article.publishedAt, now)}</time>
+        </span>
+      </p>
+      {cve && (
+        <p className="mt-1 truncate font-mono text-xs text-slate-400">
+          {cve.vendor} <span className="text-slate-600">·</span> {cve.product}
+        </p>
+      )}
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={onOpen}
+        className="mt-1.5 block leading-snug font-semibold text-slate-100 transition hover:text-rose-300"
+      >
+        {article.title}
+      </a>
+      {article.summary && <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-400">{article.summary}</p>}
+      <div className="mt-auto flex flex-wrap items-center gap-2 pt-3">
+        {due && (
+          <span
+            className={`rounded border px-1.5 py-0.5 font-mono text-[10px] tracking-wider uppercase ${
+              due.overdue ? "border-rose-400/40 bg-rose-400/10 text-rose-300" : "border-amber-400/30 bg-amber-400/10 text-amber-300"
+            }`}
+          >
+            {due.text}
+          </span>
+        )}
+        {cve?.ransomware && (
+          <span className="rounded border border-rose-400/50 bg-rose-500/20 px-1.5 py-0.5 font-mono text-[10px] tracking-wider text-rose-200 uppercase">
+            ransomware
+          </span>
+        )}
         <CardActions isRead={isRead} isSaved={isSaved} onToggleRead={onToggleRead} onToggleSaved={onToggleSaved} />
       </div>
     </li>

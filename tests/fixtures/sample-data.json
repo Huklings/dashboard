@@ -2,6 +2,7 @@
   "generatedAt": "2026-10-24T16:52:35.440Z",
   "spaces": {
     "work": [
+      "Exploited CVEs",
       "Security advisories",
       "Web development",
       "Cloud"
@@ -13,6 +14,11 @@
     ]
   },
   "sources": [
+    {
+      "url": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+      "ok": true,
+      "items": 100
+    },
     {
       "url": "https://hnrss.org/frontpage",
       "ok": true,
@@ -26,6 +32,66 @@
     }
   ],
   "articles": [
+    {
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-22222",
+      "title": "Contoso Mail Server Remote Code Execution Vulnerability",
+      "summary": "Contoso Mail Server contains a deserialization flaw that allows unauthenticated remote code execution.",
+      "source": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+      "publishedAt": "2026-10-23T00:00:00.000Z",
+      "fetchedAt": "2026-10-24T16:00:00.000Z",
+      "topics": [
+        "Exploited CVEs",
+        "Security advisories"
+      ],
+      "kind": "cve",
+      "cve": {
+        "id": "CVE-2026-22222",
+        "vendor": "Contoso",
+        "product": "Mail Server",
+        "dueDate": "2026-11-13",
+        "ransomware": true
+      }
+    },
+    {
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-11111",
+      "title": "Acme Gateway Path Traversal Vulnerability",
+      "summary": "Acme Gateway contains a path traversal vulnerability that lets a remote attacker read arbitrary files.",
+      "source": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+      "publishedAt": "2026-10-20T00:00:00.000Z",
+      "fetchedAt": "2026-10-24T16:00:00.000Z",
+      "topics": [
+        "Exploited CVEs",
+        "Security advisories"
+      ],
+      "kind": "cve",
+      "cve": {
+        "id": "CVE-2026-11111",
+        "vendor": "Acme",
+        "product": "Gateway",
+        "dueDate": "2026-11-10",
+        "ransomware": false
+      }
+    },
+    {
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-09876",
+      "title": "Fabrikam VPN Appliance Authentication Bypass Vulnerability",
+      "summary": "An authentication bypass in the web portal allows access to the admin interface.",
+      "source": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+      "publishedAt": "2026-09-30T00:00:00.000Z",
+      "fetchedAt": "2026-10-24T16:00:00.000Z",
+      "topics": [
+        "Exploited CVEs",
+        "Security advisories"
+      ],
+      "kind": "cve",
+      "cve": {
+        "id": "CVE-2026-09876",
+        "vendor": "Fabrikam",
+        "product": "VPN Appliance",
+        "dueDate": "2026-10-21",
+        "ransomware": false
+      }
+    },
     {
       "url": "https://example.org/wb/1",
       "title": "How would rivers flow on a planet with two suns?",

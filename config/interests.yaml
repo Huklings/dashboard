@@ -11,9 +11,14 @@
 # open the channel, click "more" in its description, then "Share channel" →
 # "Copy channel ID". Pin a channel under a topic's `sources` to get all its
 # videos in that topic.
+#
+# CVEs: `cisa:kev` is CISA's Known Exploited Vulnerabilities catalog, the CVEs
+# seen exploited in the wild (a handful a day). They show up as CVE cards.
 
 spaces:
   work:
+    - name: Exploited CVEs
+      sources: [cisa:kev]
     - name: Security advisories
       include: [CVE, vulnerability, exploit, ransomware, zero-day, patch]
       exclude: [webinar]
